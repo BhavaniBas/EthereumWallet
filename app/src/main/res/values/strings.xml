@@ -1,0 +1,16 @@
+<resources>
+    <string name="create_wallet">Create Wallet</string>
+    <string name="import_wallet">Import Wallet</string>
+    <string name="ethereum">Ethereum</string>
+    <string name="ethereum_details">Ethereum Wallet Details</string>
+    <string name="account_address">Account Address :</string>
+    <string name="private_key">Private Key :</string>
+    <string name="public_key">Public Key :</string>
+    <string name="available_bal">Ethereum Balance</string>
+    <string name="bal">Balance :</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
+    <string name="password">Password</string>
+    <string name="password_hint">XXXXXX</string>
+</resources>

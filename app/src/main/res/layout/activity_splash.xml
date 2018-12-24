@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@color/colorPrimary"
+    tools:context=".activity.SplashActivity">
+
+    <ImageView
+        android:id="@+id/iv_ether"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/ic_ether" />
+
+    <TextView
+        android:id="@+id/tv_ether"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_ether"
+        android:fontFamily="@font/sunny_spring_day"
+        android:gravity="center"
+        android:text="Ethereum"
+        android:textColor="@color/white"
+        android:textSize="50dp"
+        android:textStyle="normal" />
+
+
+</RelativeLayout>

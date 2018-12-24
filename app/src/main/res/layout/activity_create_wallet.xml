@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.CreateWalletActivity">
+
+    <include
+        android:id="@+id/ic_toolbar"
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@+id/ic_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_ether_details"
+                style="@style/MyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/ethereum_details"
+                android:textColor="@color/dark_blue" />
+
+            <!-- Account Address Layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sunny_spring_day"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/account_address"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_acc_address"
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <!-- Private Key Layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sunny_spring_day"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/private_key"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_private_key"
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <!-- Public Key Layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sunny_spring_day"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/public_key"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_public_key"
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/MyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/available_bal"
+                android:textColor="@color/red" />
+
+            <!-- Balance Layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sunny_spring_day"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/bal"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_bal"
+                    style="@style/MyText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textColor="@color/green"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_logout"
+                style="@style/MyText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_primary"
+                android:fontFamily="@font/sunny_spring_day"
+                android:gravity="center"
+                android:text="@string/logout"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
