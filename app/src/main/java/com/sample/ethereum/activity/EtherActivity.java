@@ -97,8 +97,7 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
                     commonDialog.dismiss();
                     Intent intent = new Intent(EtherActivity.this, CreateWalletActivity.class);
                     intent.putExtra("password", mPassword.getText().toString());
-                    intent.putExtra("private_key",0);
-                    intent.putExtra("private_key",2); // impor
+                    intent.putExtra("private_key",2);
                     startActivity(intent);
                 }
                 commonDialog.dismiss();

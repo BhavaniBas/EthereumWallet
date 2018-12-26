@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +33,18 @@ import org.ethereum.geth.KeyStore;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
+import org.web3j.crypto.WalletFile;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+
+import org.web3j.protocol.core.methods.response.EthTransaction;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 
 import java.io.File;
@@ -47,14 +54,11 @@ import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.text.DecimalFormat;
+import java.util.concurrent.ExecutionException;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.sample.ethereum.utils.Common.dismissProgressbar;
-import static com.sample.ethereum.utils.Common.showProgressbar;
 
 
 public class CreateWalletActivity extends AppCompatActivity implements View.OnClickListener {
@@ -68,7 +72,10 @@ public class CreateWalletActivity extends AppCompatActivity implements View.OnCl
     private String walletUrl;
     private KeyStore mKeyStore;
     private Account account;
-    private Call<EthereumBalance> balanceCall;
+    private LinearLayout lnrTransactionContainer;
+    private Web3j web3;
+    private TextView mTransactionCount;
+    private TextView mTransactionList;
 
 
     @SuppressLint("SetTextI18n")
@@ -83,44 +90,64 @@ public class CreateWalletActivity extends AppCompatActivity implements View.OnCl
         mPrivateKey = findViewById(R.id.tv_private_key);
         mPublicKey = findViewById(R.id.tv_public_key);
         mBalance = findViewById(R.id.tv_bal);
+        mTransactionCount = findViewById(R.id.tv_count);
+        mTransactionList = findViewById(R.id.tv_transaction);
+        lnrTransactionContainer = findViewById(R.id.lnrTransactionContainer);
         TextView mLogout = findViewById(R.id.tv_logout);
 
         mBackArrow.setOnClickListener(this);
         mLogout.setOnClickListener(this);
         mPrivateKey.setOnClickListener(this);
-        mToolBarTittle.setText(getString(R.string.create_wallet));
+        mTransactionList.setOnClickListener(this);
 
         // TODO: Get values from previous screen
         int mPrivateKeyInt = getIntent().getIntExtra("private_key", 0);
         String keyValue = getIntent().getStringExtra("key_value");
         if (mPrivateKeyInt == 1) {
-            showProgressbar(this);
-            new Handler().postDelayed(() -> {
-                dismissProgressbar();
-                // TODO: How to get public key from private key in Web3j
-                mPublicKey.setText(getPublicKeyInHex(keyValue));
-                mPrivateKey.setText(keyValue);
-                try {
-                    BigInteger privateKey = new BigInteger(mPrivateKey.getText().toString(), 16);
-                    BigInteger publicKey = new BigInteger(mPublicKey.getText().toString(), 16);
-                    ECKeyPair ecKeyPair = new ECKeyPair(privateKey, publicKey);
-                    Credentials credentials = Credentials.create(ecKeyPair);
-                    mAccountAddress.setText(credentials.getAddress());
-                    // TODO:  get Accurate Ethereum Balance
-                    Web3j web3 = Web3jFactory.build(new HttpService("https://ropsten.infura.io/v3/549de8176ea04780b1dbeaa33cc50fc8"));
-                    EthGetBalance ethGetBalance = web3
-                            .ethGetBalance(mAccountAddress.getText().toString(),
-                                    DefaultBlockParameterName.LATEST).sendAsync().get();
-                    BigInteger wei = ethGetBalance.getBalance();
-                    final BigDecimal etherBalance = Convert.fromWei(wei.toString(), Convert.Unit.ETHER);
-                    System.out.println("Account Address : " + etherBalance);
-                    mBalance.setText(etherBalance.toString());
-                    // TODO: Transaction
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }, 2000);
+            mToolBarTittle.setText(getString(R.string.import_wallet));
+            //  lnrTransactionContainer.setVisibility(View.VISIBLE);
+
+            // TODO: How to get public key from private key in Web3j
+            mPublicKey.setText(getPublicKeyInHex(keyValue));
+            mPrivateKey.setText(keyValue);
+            try {
+                BigInteger privateKey = new BigInteger(mPrivateKey.getText().toString(), 16);
+                BigInteger publicKey = new BigInteger(mPublicKey.getText().toString(), 16);
+                ECKeyPair ecKeyPair = new ECKeyPair(privateKey, publicKey);
+                Credentials credentials = Credentials.create(ecKeyPair);
+                mAccountAddress.setText(credentials.getAddress());
+                // TODO:  get Accurate Ethereum Balance
+                web3 = Web3jFactory.build(new HttpService("https://ropsten.infura.io/v3/549de8176ea04780b1dbeaa33cc50fc8"));
+                EthGetBalance ethGetBalance = web3
+                        .ethGetBalance(mAccountAddress.getText().toString(),
+                                DefaultBlockParameterName.LATEST).sendAsync().get();
+                BigInteger wei = ethGetBalance.getBalance();
+                final BigDecimal etherBalance = Convert.fromWei(wei.toString(), Convert.Unit.ETHER);
+                System.out.println("Account Address : " + etherBalance);
+                mBalance.setText(etherBalance.toString() + " " + "ETH");
+                // TODO: Transaction Count
+                EthGetTransactionCount ethGetTransactionCount = web3.ethGetTransactionCount(
+                        mAccountAddress.getText().toString(), DefaultBlockParameterName.LATEST).
+                        sendAsync().get();
+              /*  // TODO: Sending an Ether transaction // Temporarily Hide...
+                TransactionReceipt transactionReceipt = Transfer.sendFunds(web3,
+                        credentials, "0x7b5481D6BE5956a76Fe83E380C219B00a0339d6f",
+                        BigDecimal.valueOf(0.1), Convert.Unit.ETHER).sendAsync().get();
+                String transactionHash = transactionReceipt.getTransactionHash();
+                String contractAddress = transactionReceipt.getContractAddress();
+                Log.i("TAG", "contractAddress Details" + contractAddress);
+                // TODO: Transaction Details
+                EthTransaction transaction = web3.ethGetTransactionByHash(transactionHash)
+                        .sendAsync().get();
+                Log.i("TAG", "Transaction Details" + transaction.getTransaction().toString(16));*/
+              //  mTransactionCount.setText(ethGetTransactionCount.getTransactionCount().toString(16));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
+            // lnrTransactionContainer.setVisibility(View.GONE);
+            mToolBarTittle.setText(getString(R.string.import_wallet));
             String password = getIntent().getStringExtra("password");
             SharedHelper.putKey(CreateWalletActivity.this, "password", password);
 
@@ -150,46 +177,25 @@ public class CreateWalletActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void getBalance(int position) {
-        if (NetworkUtils.isNetworkConnected(CreateWalletActivity.this)) {
-            showProgressbar(this);
-            ApiInterface service = APIClient.getAPIClient();
-            if (position == 1) {
-                balanceCall = service.getBalance("account", "balance",
-                        SharedHelper.getKey(this, "import_Address"), "latest", BuildConfig.API_KEY);
-            } else {
-                balanceCall = service.getBalance("account", "balance",
-                        SharedHelper.getKey(this, "address"), "latest", BuildConfig.API_KEY);
-            }
-            balanceCall.enqueue(new Callback<EthereumBalance>() {
-                @Override
-                public void onResponse(@NonNull Call<EthereumBalance> call,
-                                       @NonNull Response<EthereumBalance> response) {
-                    dismissProgressbar();
-                    if (response.isSuccessful()) {
-                        EthereumBalance balance = response.body();
-                        if (balance != null) {
-                            mBalance.setText(balance.getResult());
-                        }
-                        if (position == 0)
-                            mAccountAddress.setText(SharedHelper.getKey(CreateWalletActivity.this, "address"));
-                        mPrivateKey.setText(SharedHelper.getKey(CreateWalletActivity.this, "privateKey"));
-                        mPublicKey.setText(SharedHelper.getKey(CreateWalletActivity.this, "publicKey"));
-                    }
-                }
+    private void getBalance() {
 
-                @Override
-                public void onFailure(@NonNull Call<EthereumBalance> call, @NonNull Throwable t) {
-                    dismissProgressbar();
-                    Toasty.error(CreateWalletActivity.this, "Something went wrong!!!",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toasty.info(CreateWalletActivity.this, "Please check your internet connection",
-                    Toast.LENGTH_SHORT).show();
+        // TODO:  get Accurate Ethereum Balance
+        web3 = Web3jFactory.build(new HttpService("https://ropsten.infura.io/v3/549de8176ea04780b1dbeaa33cc50fc8"));
+        EthGetBalance ethGetBalance = null;
+        try {
+            ethGetBalance = web3
+                    .ethGetBalance(SharedHelper.getKey(this, "address"),
+                            DefaultBlockParameterName.LATEST).sendAsync().get();
+            BigInteger wei = ethGetBalance.getBalance();
+            final BigDecimal etherBalance = Convert.fromWei(wei.toString(), Convert.Unit.ETHER);
+            System.out.println("Account Address : " + etherBalance);
+            mAccountAddress.setText(SharedHelper.getKey(CreateWalletActivity.this, "address"));
+            mPrivateKey.setText(SharedHelper.getKey(CreateWalletActivity.this, "privateKey"));
+            mPublicKey.setText(SharedHelper.getKey(CreateWalletActivity.this, "publicKey"));
+            mBalance.setText(etherBalance.toString() + " " + "ETH");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -197,13 +203,16 @@ public class CreateWalletActivity extends AppCompatActivity implements View.OnCl
         if (SharedHelper.getKey(this, "fileName").equals("")) {
             myDownload = new File(Environment.getExternalStoragePublicDirectory(Environment.
                     DIRECTORY_DOWNLOADS) + "/NewWallet");
+            myDownload.mkdirs();
             mKeyStore = new KeyStore(myDownload.getAbsolutePath(), Geth.LightScryptN, Geth.LightScryptP);
             String fileName = WalletUtils.generateLightNewWalletFile(SharedHelper.getKey(CreateWalletActivity.this, "password"),
                     new File(String.valueOf(myDownload)));
+            File file = new File(myDownload,fileName);
+            file.createNewFile();
             SharedHelper.putKey(this, "fileName", fileName);
             printAddress(SharedHelper.getKey(this, "fileName"));
         } else {
-            getBalance(0);
+            getBalance();
         }
     }
 
@@ -228,7 +237,7 @@ public class CreateWalletActivity extends AppCompatActivity implements View.OnCl
                 SharedHelper.putKey(this, "address", address);
                 SharedHelper.putKey(this, "privateKey", String.valueOf(privateKey));
                 SharedHelper.putKey(this, "publicKey", String.valueOf(publicKey));
-                getBalance(0);
+                getBalance();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -262,6 +271,11 @@ public class CreateWalletActivity extends AppCompatActivity implements View.OnCl
                     clipboard.setPrimaryClip(clip);
                 }
                 Toasty.success(this, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_transaction:
+                Intent transactionIntent = new Intent(CreateWalletActivity.this,TransactionActivity.class);
+                transactionIntent.putExtra("account_address",mAccountAddress.getText().toString());
+                startActivity(transactionIntent);
                 break;
         }
     }

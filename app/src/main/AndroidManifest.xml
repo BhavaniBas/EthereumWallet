@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name="com.sample.ethereum.activity.EtherActivity" />
+        <activity android:name=".activity.EtherActivity" />
         <activity
-            android:name="com.sample.ethereum.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sample.ethereum.activity.CreateWalletActivity">
-        </activity>
+        <activity android:name=".activity.CreateWalletActivity" />
+        <activity android:name=".activity.TransactionActivity" />
+        <activity android:name=".activity.TransactionDetailsActivity"></activity>
     </application>
 
 </manifest>

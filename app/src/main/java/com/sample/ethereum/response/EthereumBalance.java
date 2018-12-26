@@ -19,12 +19,23 @@ public class EthereumBalance implements Parcelable {
     private String message;
     @SerializedName("result")
     @Expose
-    private String result;
+    private List<EtherResult> etherResults;
 
-    protected EthereumBalance(Parcel in) {
+
+    private EthereumBalance(Parcel in) {
         status = in.readString();
         message = in.readString();
-        result = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+        dest.writeString(message);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<EthereumBalance> CREATOR = new Creator<EthereumBalance>() {
@@ -55,23 +66,11 @@ public class EthereumBalance implements Parcelable {
         this.message = message;
     }
 
-    public String getResult() {
-        return result;
+    public List<EtherResult> getResult() {
+        return etherResults;
     }
 
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(status);
-        dest.writeString(message);
-        dest.writeString(result);
+    public void setResult(List<EtherResult> etherResult) {
+        this.etherResults = etherResult;
     }
 }

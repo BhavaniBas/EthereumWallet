@@ -41,7 +41,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
     <style name="MyEditText" parent="@android:style/TextAppearance.Widget.EditText">

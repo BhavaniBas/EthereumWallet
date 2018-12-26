@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/ic_toolbar"
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ic_toolbar"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <!-- Transaction Amount Layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:gravity="start|center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_up" />
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    style="@style/MyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="3dp"
+                    android:gravity="center"
+                    android:textColor="@color/green"
+                    android:padding="5dp" />
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/eth"
+                    android:fontFamily="@font/sunny_spring_day"
+                    android:textColor="@color/grey" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/background_with_shadow" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <!-- Sender Layout-->
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:text="@string/sender"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_sender"
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_with_shadow" />
+
+                <!-- Transaction Layout-->
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:text="@string/transaction"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_transaction"
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_with_shadow" />
+
+                <!-- Network Fee Layout-->
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:text="@string/network_fee"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_net_fee"
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_with_shadow" />
+
+                <!-- Confirmations Layout-->
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:text="@string/confirmations"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_confirm"
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_with_shadow" />
+
+
+                <!-- Transaction Time Layout-->
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:text="@string/transaction_time"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_with_shadow" />
+
+                <!-- Nonce Layout-->
+
+                <TextView
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:text="@string/nonce"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_nonce"
+                    style="@style/MyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:padding="3dp"
+                    android:textColor="@color/grey"
+                    android:textSize="14dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_with_shadow" />
+
+                <TextView
+                    android:id="@+id/tv_more_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:text="@string/more_details"
+                    android:textSize="18dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/blue"
+                    android:fontFamily="@font/quicksand_medium"
+                    style="@style/MyText"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

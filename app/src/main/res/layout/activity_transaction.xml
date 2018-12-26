@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.TransactionActivity">
+
+    <include
+        android:id="@+id/ic_toolbar"
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_transaction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/ic_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_no_data"
+        style="@style/MyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/sunny_spring_day"
+        android:gravity="center"
+        android:padding="20dp"
+        android:visibility="gone"
+        android:text="@string/no_transaction_found"
+        android:textAllCaps="false"
+        android:textColor="@color/red"
+        android:textSize="25dp" />
+
+
+</RelativeLayout>

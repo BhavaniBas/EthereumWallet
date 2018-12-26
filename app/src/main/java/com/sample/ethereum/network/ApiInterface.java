@@ -15,4 +15,13 @@ public interface ApiInterface {
                                      @Query("address") String address,
                                      @Query("tag") String tag,
                                      @Query("apiKey") String apiKey);
+
+    @GET("api?")
+    Call<EthereumBalance> getTransactionList(@Query("module") String module,
+                                             @Query("action") String action,
+                                             @Query("address") String address,
+                                             @Query("sort") String sort,
+                                             @Query("apiKey") String apiKey);
+
+
 }
