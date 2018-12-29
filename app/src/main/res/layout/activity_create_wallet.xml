@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/app_back_ground"
     tools:context=".activity.CreateWalletActivity">
 
     <include
@@ -173,15 +173,15 @@
                     android:textSize="14dp" />
             </LinearLayout>
 
-            <!-- Transaction Count Layout-->
+            <!-- Token Name Layout-->
 
             <LinearLayout
-                android:id="@+id/lnrTransactionContainer"
+                android:id="@+id/lnrToken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="horizontal">
 
                 <TextView
                     style="@style/MyText"
@@ -191,18 +191,18 @@
                     android:fontFamily="@font/sunny_spring_day"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="@string/transaction"
+                    android:text="Token :"
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/tv_count"
+                    android:id="@+id/tv_token"
                     style="@style/MyText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
                     android:gravity="start"
                     android:padding="10dp"
-                    android:textColor="@color/green"
+                    android:textColor="@color/red"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -226,6 +226,20 @@
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/addToken"
+                    style="@style/MyText"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="end"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_primary"
+                    android:fontFamily="@font/sunny_spring_day"
+                    android:gravity="center"
+                    android:text="@string/add_token"
+                    android:textColor="@color/white" />
+
+                <TextView
                     android:id="@+id/tv_logout"
                     style="@style/MyText"
                     android:layout_width="100dp"
@@ -239,7 +253,6 @@
                     android:text="@string/logout"
                     android:textColor="@color/white" />
             </RelativeLayout>
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

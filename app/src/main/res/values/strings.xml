@@ -25,5 +25,8 @@
     <string name="transaction_time">Transaction Time</string>
     <string name="nonce">Nonce</string>
     <string name="more_details">More Details</string>
+    <string name="key_store">Keystore</string>
+    <string name="add_token">Add Token</string>
+    <string name="import_key">Import Key</string>
     <string name="no_transaction_found">No Transaction Found !</string>
 </resources>

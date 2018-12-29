@@ -8,14 +8,18 @@ import android.graphics.drawable.ColorDrawable;
 
 import com.sample.ethereum.R;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 public class Common {
 
     private static ProgressDialog mProgressDialog;
+    private static List<String> mContractAddress = new ArrayList<>();
 
     public static void showProgressbar(Context mContext) {
         dismissProgressbar();
@@ -47,5 +51,13 @@ public class Common {
         }catch (Exception ignored) {
         }
         return "";
+    }
+
+
+    public static double round(double value, int numberOfDigitsAfterDecimalPoint) {
+        BigDecimal bigDecimal = new BigDecimal(value);
+        bigDecimal = bigDecimal.setScale(numberOfDigitsAfterDecimalPoint,
+                BigDecimal.ROUND_HALF_EVEN);
+        return bigDecimal.doubleValue();
     }
 }

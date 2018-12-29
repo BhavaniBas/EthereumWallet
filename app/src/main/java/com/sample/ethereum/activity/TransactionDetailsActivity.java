@@ -63,8 +63,8 @@ public class TransactionDetailsActivity extends AppCompatActivity implements Vie
             }
             sender.setText(etherResult.getFrom());
             transaction.setText(etherResult.getHash());
-            int gas = Integer.parseInt(etherResult.getGas());
-            int gasPrice = Integer.parseInt(etherResult.getGasPrice());
+            long gas = Long.parseLong(String.valueOf(etherResult.getGas()));
+            long gasPrice = Long.parseLong(String.valueOf(etherResult.getGasPrice()));
             String netFee = String.valueOf(gas * gasPrice);
             network_fee.setText(netFee);
             confirmations.setText(etherResult.getConfirmations());

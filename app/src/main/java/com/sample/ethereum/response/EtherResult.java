@@ -37,10 +37,10 @@ public class EtherResult implements Parcelable {
     private String value;
     @SerializedName("gas")
     @Expose
-    private String gas;
+    private long gas;
     @SerializedName("gasPrice")
     @Expose
-    private String gasPrice;
+    private long gasPrice;
     @SerializedName("isError")
     @Expose
     private String isError;
@@ -73,8 +73,8 @@ public class EtherResult implements Parcelable {
         from = in.readString();
         to = in.readString();
         value = in.readString();
-        gas = in.readString();
-        gasPrice = in.readString();
+        gas = in.readLong();
+        gasPrice = in.readLong();
         isError = in.readString();
         txreceiptStatus = in.readString();
         input = in.readString();
@@ -95,8 +95,8 @@ public class EtherResult implements Parcelable {
         dest.writeString(from);
         dest.writeString(to);
         dest.writeString(value);
-        dest.writeString(gas);
-        dest.writeString(gasPrice);
+        dest.writeLong(gas);
+        dest.writeLong(gasPrice);
         dest.writeString(isError);
         dest.writeString(txreceiptStatus);
         dest.writeString(input);
@@ -195,19 +195,19 @@ public class EtherResult implements Parcelable {
         this.value = value;
     }
 
-    public String getGas() {
+    public long getGas() {
         return gas;
     }
 
-    public void setGas(String gas) {
+    public void setGas(long gas) {
         this.gas = gas;
     }
 
-    public String getGasPrice() {
+    public long getGasPrice() {
         return gasPrice;
     }
 
-    public void setGasPrice(String gasPrice) {
+    public void setGasPrice(long gasPrice) {
         this.gasPrice = gasPrice;
     }
 
