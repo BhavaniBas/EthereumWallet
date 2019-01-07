@@ -68,7 +68,7 @@ public class TransactionDetailsActivity extends AppCompatActivity implements Vie
             String netFee = String.valueOf(gas * gasPrice);
             network_fee.setText(netFee);
             confirmations.setText(etherResult.getConfirmations());
-            transaction_time.setText(Common.getDateCurrentTimeZone(Long.parseLong(etherResult.getTimeStamp())));
+            transaction_time.setText(Common.getDate(Long.parseLong(etherResult.getTimeStamp())));
             nonce.setText(etherResult.getNonce());
         }
     }

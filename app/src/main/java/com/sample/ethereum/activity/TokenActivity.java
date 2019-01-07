@@ -70,11 +70,14 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
         mBackArrow.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
 
-        if (SharedHelper.getListKey(TokenActivity.this, "addressList").equals("null") ||
-                SharedHelper.getListKey(TokenActivity.this,"addressList").isEmpty()) {
-            address.add("0x0ba2235e47fe9f4c2d4db64beb9f5f73");
-        } else {
-            address = SharedHelper.getListKey(TokenActivity.this, "addressList");
+        try {
+            if (SharedHelper.getListKey(TokenActivity.this, "addressList") == null) {
+                address.add("0x0ba2235e47fe9f4c2d4db64beb9f5f73");
+            } else {
+                address = SharedHelper.getListKey(TokenActivity.this, "addressList");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         mEdTokenAddress.addTextChangedListener(new TextWatcher() {

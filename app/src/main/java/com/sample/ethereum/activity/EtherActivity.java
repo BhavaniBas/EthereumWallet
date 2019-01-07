@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import com.sample.ethereum.R;
 import com.sample.ethereum.SharedHelper;
+import com.sample.ethereum.utils.Common;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
@@ -47,6 +49,8 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_create:
+                SharedHelper.clearSharedPreferences(EtherActivity.this);
+                SharedHelper.putKey(this, "address", "");
                 ShowPasswordDialog(0);
                 break;
             case R.id.btn_import:
@@ -88,9 +92,21 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
             // TODO: Import Key
             keyFrame.setVisibility(View.GONE);
             tvKey.setVisibility(View.GONE);
-            mEyeImg.setVisibility(View.GONE);
+            mEyeImg.setVisibility(View.VISIBLE);
             mText.setText("Private Key");
+            mEyeImg.setTag(0);
             commonDialog.show();
+            mEyeImg.setOnClickListener(v -> {
+                if (mEyeImg.getTag().equals(1)) {
+                    mPassword.setTransformationMethod(new PasswordTransformationMethod());
+                    mEyeImg.setImageDrawable(ContextCompat.getDrawable(EtherActivity.this, R.drawable.ic_eye_close));
+                    mEyeImg.setTag(0);
+                } else {
+                    mEyeImg.setTag(1);
+                    mPassword.setTransformationMethod(null);
+                    mEyeImg.setImageDrawable(ContextCompat.getDrawable(EtherActivity.this, R.drawable.ic_eye_open));
+                }
+            });
             // TODO: Button Click Listener
             mSubmit.setOnClickListener(v -> {
                 if (mPassword.getText().toString().isEmpty()) {
@@ -110,9 +126,22 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
             // TODO: Keystore
             keyFrame.setVisibility(View.VISIBLE);
             tvKey.setVisibility(View.VISIBLE);
-            mEyeImg.setVisibility(View.GONE);
-            mText.setText(getString(R.string.key_store));
+            mEyeImg.setVisibility(View.VISIBLE);
+            mEyeImg.setTag(0);
+            tvKey.setText(getString(R.string.key_store));
+            mText.setText(getString(R.string.password));
             commonDialog.show();
+            mEyeImg.setOnClickListener(v -> {
+                if (mEyeImg.getTag().equals(1)) {
+                    mPassword.setTransformationMethod(new PasswordTransformationMethod());
+                    mEyeImg.setImageDrawable(ContextCompat.getDrawable(EtherActivity.this, R.drawable.ic_eye_close));
+                    mEyeImg.setTag(0);
+                } else {
+                    mEyeImg.setTag(1);
+                    mPassword.setTransformationMethod(null);
+                    mEyeImg.setImageDrawable(ContextCompat.getDrawable(EtherActivity.this, R.drawable.ic_eye_open));
+                }
+            });
             // TODO: Button Click Listener
             mSubmit.setOnClickListener(v -> {
                 if (mKeySyore.getText().toString().isEmpty()) {
@@ -123,9 +152,16 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
                             Toast.LENGTH_SHORT).show();
                 } else {
                     commonDialog.dismiss();
+                    String url = null;
+                    try {
+                        url = Common.save(mKeySyore.getText().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent(EtherActivity.this, CreateWalletActivity.class);
-                   /* intent.putExtra("private_key", 1);
-                    intent.putExtra("key_value", mPassword.getText().toString());*/
+                    intent.putExtra("private_key", 3);
+                    intent.putExtra("key_value", mPassword.getText().toString());
+                    intent.putExtra("url", url);
                     startActivity(intent);
                 }
                 commonDialog.dismiss();

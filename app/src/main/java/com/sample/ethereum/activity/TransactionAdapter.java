@@ -49,7 +49,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final EtherResult etherResult = mList.get(position);
         if (etherResult != null) {
-            holder.mTimeStamp.setText(Common.getDateCurrentTimeZone(
+            holder.mTimeStamp.setText(Common.getDate(
                     Long.parseLong(etherResult.getTimeStamp())));
             String from = etherResult.getFrom();
             if (from != null)
