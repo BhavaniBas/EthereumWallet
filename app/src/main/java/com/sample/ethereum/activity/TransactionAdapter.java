@@ -25,16 +25,31 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     private Context context;
     private List<EtherResult> mList;
     private String mTransAddress;
-    private String transactionStatus = "";
-    private TransactionActivity.TransactionListener transactionListener;
+    private int mPosition = 0;
+    private CreateWalletActivity.CreateTransactionListencer createListencer;
+    private TransactionActivity.TransactionListener transactionListencer;
 
     TransactionAdapter(Context mContext, List<EtherResult> mEtherList,
                        String transactionAddress,
-                       TransactionActivity.TransactionListener mTransactionListener) {
+                       CreateWalletActivity.CreateTransactionListencer mTransactionListener, int i) {
         context = mContext;
         mList = mEtherList;
         mTransAddress = transactionAddress;
-        transactionListener = mTransactionListener;
+        createListencer = mTransactionListener;
+        mPosition = i;
+    }
+
+    TransactionAdapter(TransactionActivity mContext,
+                       List<EtherResult> mEtherList,
+                       String transactionAddress,
+                       TransactionActivity.TransactionListener mTransListener,
+                       int i) {
+
+        context = mContext;
+        mList = mEtherList;
+        mTransAddress = transactionAddress;
+        transactionListencer = mTransListener;
+        mPosition = i;
     }
 
     @NonNull
@@ -63,19 +78,29 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             if (etherResult.getValue() != null) {
                 String wei = etherResult.getValue();
                 BigDecimal etherBalance = Convert.fromWei(wei, Convert.Unit.ETHER);
-                holder.mTransAmount.setText(etherBalance.toString() + " " + "ETH");
+                holder.mTransAmount.setText(etherBalance.toString() + " " +
+                        context.getResources().getString(R.string.eth));
             }
             if (etherResult.getHash() != null)
                 holder.mTransHash.setText(etherResult.getHash());
+            if(mPosition == 0) {
+                holder.lnrTransaction.setOnClickListener(v ->
+                        createListencer.createWalletClicked(etherResult));
+            } else {
+                holder.lnrTransaction.setOnClickListener(v ->
+                        transactionListencer.transactionClicked(etherResult));
+            }
 
-            holder.lnrTransaction.setOnClickListener(v ->
-                    transactionListener.transactionClicked(etherResult));
         }
     }
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        if (mPosition == 0) {
+            return 1;
+        } else {
+            return mList.size();
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

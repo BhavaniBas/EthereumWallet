@@ -30,7 +30,8 @@
         <activity android:name=".activity.CreateWalletActivity" />
         <activity android:name=".activity.TransactionActivity" />
         <activity android:name=".activity.TransactionDetailsActivity" />
-        <activity android:name=".activity.TokenActivity"></activity>
+        <activity android:name=".activity.TokenActivity" />
+        <activity android:name=".activity.SendTransactionActivity"></activity>
     </application>
 
 </manifest>

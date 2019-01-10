@@ -25,7 +25,6 @@ import java.util.TimeZone;
 public class Common {
 
     private static ProgressDialog mProgressDialog;
-    private static List<String> mContractAddress = new ArrayList<>();
 
     public static void showProgressbar(Context mContext) {
         dismissProgressbar();
@@ -67,5 +66,21 @@ public class Common {
         writer.write(jsonString);
         writer.close();
         return myDownload + "/" + "file.json";
+    }
+
+    public interface Constants {
+
+        String address = "address";
+        String private_key = "private_key";
+        String key_value = "key_value";
+        String url = "url";
+        String password = "password";
+        String privateKey = "privateKey";
+        String publicKey = "publicKey";
+        String account_address = "account_address";
+        String addressList = "addressList";
+        String etherResult = "etherResult";
+        String transaction = "transaction";
+
     }
 }

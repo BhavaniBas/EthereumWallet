@@ -32,7 +32,7 @@ public class TransactionDetailsActivity extends AppCompatActivity implements Vie
         ImageView image = findViewById(R.id.image);
         TextView amount = findViewById(R.id.tv_amount);
         TextView sender = findViewById(R.id.tv_sender);
-        TextView transaction = findViewById(R.id.tv_transaction);
+        TextView transaction = findViewById(R.id.tv_trans);
         TextView network_fee = findViewById(R.id.tv_net_fee);
         TextView confirmations = findViewById(R.id.tv_confirm);
         TextView transaction_time = findViewById(R.id.tv_time);
@@ -43,8 +43,8 @@ public class TransactionDetailsActivity extends AppCompatActivity implements Vie
         mBackArrow.setOnClickListener(this);
         moreDetails.setOnClickListener(this);
 
-        etherResult = getIntent().getParcelableExtra("etherResult");
-        String transactionAddress = getIntent().getStringExtra("transaction");
+        etherResult = getIntent().getParcelableExtra(Common.Constants.etherResult);
+        String transactionAddress = getIntent().getStringExtra(Common.Constants.transaction);
         mToolBarTittle.setText(getString(R.string.transaction_details));
 
         if (etherResult != null) {
@@ -63,8 +63,8 @@ public class TransactionDetailsActivity extends AppCompatActivity implements Vie
             }
             sender.setText(etherResult.getFrom());
             transaction.setText(etherResult.getHash());
-            long gas = Long.parseLong(String.valueOf(etherResult.getGas()));
-            long gasPrice = Long.parseLong(String.valueOf(etherResult.getGasPrice()));
+            double gas = Double.parseDouble(String.valueOf(etherResult.getGas()));
+            double gasPrice = Double.parseDouble(String.valueOf(etherResult.getGasPrice()));
             String netFee = String.valueOf(gas * gasPrice);
             network_fee.setText(netFee);
             confirmations.setText(etherResult.getConfirmations());

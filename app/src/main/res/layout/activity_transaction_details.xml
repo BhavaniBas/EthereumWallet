@@ -121,7 +121,7 @@
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/tv_transaction"
+                    android:id="@+id/tv_trans"
                     style="@style/MyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

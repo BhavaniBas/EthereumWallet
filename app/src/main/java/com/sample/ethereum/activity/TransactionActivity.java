@@ -17,6 +17,7 @@ import com.sample.ethereum.network.APIClient;
 import com.sample.ethereum.network.ApiInterface;
 import com.sample.ethereum.response.EtherResult;
 import com.sample.ethereum.response.EthereumBalance;
+import com.sample.ethereum.utils.Common;
 import com.sample.ethereum.utils.NetworkUtils;
 
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import static com.sample.ethereum.utils.Common.showProgressbar;
 public class TransactionActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
-    private TextView mNoData;
     private String transactionAddress;
     private List<EtherResult> mEtherList = new ArrayList<>();
     private TransactionAdapter mTransactionAdapter;
@@ -46,16 +46,16 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
 
         ImageView mBackArrow = findViewById(R.id.iv_back_arrow);
         TextView mToolBarTittle = findViewById(R.id.toolbar_title);
-        mNoData = findViewById(R.id.tv_no_data);
         mBackArrow.setVisibility(View.VISIBLE);
         mToolBarTittle.setText(getString(R.string.transaction));
-        transactionAddress = getIntent().getStringExtra("account_address");
+
+        transactionAddress = getIntent().getStringExtra(Common.Constants.account_address);
         mBackArrow.setOnClickListener(this);
         initViews();
     }
 
     private void initViews() {
-        recyclerView = findViewById(R.id.rv_transaction);
+        recyclerView = findViewById(R.id.rv_trans);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -77,27 +77,25 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
                     mEtherList = Objects.requireNonNull(ethereumBalance).getResult();
                     if (mEtherList != null && !mEtherList.isEmpty()) {
                         recyclerView.setVisibility(View.VISIBLE);
-                        mNoData.setVisibility(View.GONE);
-                        mTransactionAdapter = new TransactionAdapter(
-                                TransactionActivity.this, mEtherList, transactionAddress,
-                                mTransactionListener);
+                        mTransactionAdapter = new TransactionAdapter(TransactionActivity.this,
+                                mEtherList, transactionAddress,
+                                 mTransListener,2);
                         recyclerView.setAdapter(mTransactionAdapter);
                         mTransactionAdapter.notifyDataSetChanged();
                     } else {
                         recyclerView.setVisibility(View.GONE);
-                        mNoData.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<EthereumBalance> call, @NonNull Throwable t) {
                     dismissProgressbar();
-                    Toasty.error(TransactionActivity.this, "Something went wrong!!!",
+                    Toasty.error(TransactionActivity.this, getString(R.string.something_went_wrong),
                             Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toasty.info(TransactionActivity.this, "Please check your internet connection",
+            Toasty.info(TransactionActivity.this, getString(R.string.check_your_internet_connection),
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -111,10 +109,13 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
         void transactionClicked(EtherResult etherResult);
     }
 
-    private TransactionListener mTransactionListener = (etherResult) -> {
-        Intent intent = new Intent(TransactionActivity.this,TransactionDetailsActivity.class);
-        intent.putExtra("etherResult",etherResult);
-        intent.putExtra("transaction",transactionAddress);
-        startActivity(intent);
+    private TransactionActivity.TransactionListener mTransListener = new TransactionActivity.TransactionListener() {
+        @Override
+        public void transactionClicked(EtherResult etherResult) {
+            Intent intent = new Intent(TransactionActivity.this, TransactionDetailsActivity.class);
+            intent.putExtra(Common.Constants.etherResult, etherResult);
+            intent.putExtra(Common.Constants.transaction, transactionAddress);
+            TransactionActivity.this.startActivity(intent);
+        }
     };
 }

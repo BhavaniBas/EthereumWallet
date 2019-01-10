@@ -1,9 +1,9 @@
 package com.sample.ethereum.activity;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,6 +23,7 @@ import com.sample.ethereum.utils.Common;
 import com.sample.ethereum.utils.NetworkUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -48,6 +49,8 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
     private TextView tvTokenBal;
     private TextView tvEthTokenBal;
     private String contractAddress;
+    ArrayList<String> values = new ArrayList<>();
+    ArrayList<String> values1 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +74,10 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
         mSubmit.setOnClickListener(this);
 
         try {
-            if (SharedHelper.getListKey(TokenActivity.this, "addressList") == null) {
-                address.add("0x0ba2235e47fe9f4c2d4db64beb9f5f73");
+            if (SharedHelper.getListKey(TokenActivity.this, Common.Constants.addressList) == null) {
+                address.add("0x0ba2235e47fe9f4c2d4db");
             } else {
-                address = SharedHelper.getListKey(TokenActivity.this, "addressList");
+                address = SharedHelper.getListKey(TokenActivity.this, Common.Constants.addressList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,23 +96,26 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-                String editable = s.toString();
+                String editable = s.toString().trim();
                 if (editable.length() > 0) {
-                    if (!address.isEmpty()) {
-                        for (int i = 0; i < address.size(); i++) {
-                            contractAddress = address.get(i);
+                    HashSet<String> hashSet = new HashSet<>(address);
+                    values1.clear();
+                    values1.addAll(hashSet);
+                    if (!values1.isEmpty()) {
+                        boolean verify = false;
+                        for (int i = 0; i < values1.size(); i++) {
+                            if (values1.get(i).equalsIgnoreCase(s.toString())) {
+                                verify = true;
+                                Toasty.error(TokenActivity.this, getString(R.string.token_already_added),
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        if (contractAddress.equalsIgnoreCase(
-                                "0xBe15E18924513829cFf5502D6D2806eb2F3d392b")) {
-                            Toasty.error(TokenActivity.this, "Token has already been added",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
+                        if (!verify) {
                             if (NetworkUtils.isNetworkConnected(TokenActivity.this)) {
                                 showProgressbar(TokenActivity.this);
                                 ApiInterface service = APIClient.getAPIClient();
-                                Call<TokenResponse> tokenResponseCall = service.
-                                        getTokenAddress(editable,
-                                                SharedHelper.getKey(TokenActivity.this, "address"));
+                                Call<TokenResponse> tokenResponseCall = service.getTokenAddress(editable,
+                                        SharedHelper.getKey(TokenActivity.this, Common.Constants.address));
                                 tokenResponseCall.enqueue(new Callback<TokenResponse>() {
                                     @Override
                                     public void onResponse(@NonNull Call<TokenResponse> call,
@@ -118,20 +124,22 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
                                         if (response.isSuccessful()) {
                                             TokenResponse tokenResponse = response.body();
                                             if (tokenResponse != null) {
-                                                if (tokenResponse.getMessage() != null &&
-                                                        tokenResponse.getMessage().equals("no contract code at given address")) {
-                                                    Toasty.error(TokenActivity.this, "Invalid address",
-                                                            Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    address.add("0xBe15E18924513829cFf5502D6D2806eb2F3d392b");
-                                                    SharedHelper.putListKey(TokenActivity.this, "addressList", address);
-                                                    mTokenSymbol.setText(tokenResponse.getSymbol());
-                                                    mTokenDecimal.setText(String.valueOf(tokenResponse.getDecimals()));
-                                                    mSubmit.setEnabled(true);
-                                                    tokenBal = tokenResponse.getBalance();
-                                                    tokenName = tokenResponse.getSymbol();
-                                                    ethBal = tokenResponse.getEthBalance();
-                                                }
+                                                address.add(tokenResponse.getToken());
+                                                HashSet<String> hashSet = new HashSet<>(address);
+                                                values.clear();
+                                                values.addAll(hashSet);
+                                                SharedHelper.putListKey(TokenActivity.this, Common.Constants.addressList, values);
+                                                mTokenSymbol.setText(tokenResponse.getSymbol());
+                                                mTokenDecimal.setText(String.valueOf(tokenResponse.getDecimals()));
+                                                mSubmit.setEnabled(true);
+                                                tokenBal = tokenResponse.getBalance();
+                                                tokenName = tokenResponse.getSymbol();
+                                                ethBal = tokenResponse.getEthBalance();
+                                            }
+                                        } else {
+                                            if (response.code() == 404) {
+                                                Toasty.error(TokenActivity.this, getString(R.string.invalid_address),
+                                                        Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     }
@@ -140,18 +148,17 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
                                     public void onFailure(@NonNull Call<TokenResponse> call,
                                                           @NonNull Throwable t) {
                                         dismissProgressbar();
-                                        Toasty.error(TokenActivity.this, "Something went wrong!!!",
+                                        Toasty.error(TokenActivity.this, getString(R.string.something_went_wrong),
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             } else {
-                                Toasty.info(TokenActivity.this, "Please check your internet connection",
+                                Toasty.info(TokenActivity.this, getString(R.string.check_your_internet_connection),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
-
                     } else {
-                        Toasty.error(TokenActivity.this, "Please enter token address",
+                        Toasty.error(TokenActivity.this, getString(R.string.enter_token_address),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }

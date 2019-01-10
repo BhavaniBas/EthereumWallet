@@ -1,12 +1,9 @@
 package com.sample.ethereum.activity;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -18,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,25 +46,40 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_create:
                 SharedHelper.clearSharedPreferences(EtherActivity.this);
-                SharedHelper.putKey(this, "address", "");
+                SharedHelper.putKey(this, Common.Constants.address, "");
                 ShowPasswordDialog(0);
                 break;
             case R.id.btn_import:
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(this);
-                }
-                builder.setMessage("Are you sure you want ethereum wallet?")
-                        .setPositiveButton(getString(R.string.import_key), (dialog, which) ->
-                                ShowPasswordDialog(1))
-                        .setNegativeButton(getString(R.string.key_store), (dialog, which) ->
-                                ShowPasswordDialog(2))
-                        .show();
-
+                showDialog();
                 break;
         }
+    }
+
+    private void showDialog() {
+        final Dialog commonDialog = new Dialog(EtherActivity.this);
+        commonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        commonDialog.setCancelable(false);
+        commonDialog.setCanceledOnTouchOutside(false);
+        commonDialog.setContentView(R.layout.layout_custom_dialog);
+        Window window = commonDialog.getWindow();
+        Button btnKey = commonDialog.findViewById(R.id.btn_key);
+        Button btnImportKey = commonDialog.findViewById(R.id.btn_import);
+        btnKey.setOnClickListener(v -> {
+            commonDialog.dismiss();
+            ShowPasswordDialog(2);
+        });
+        btnImportKey.setOnClickListener(v -> {
+            commonDialog.dismiss();
+            ShowPasswordDialog(1);
+        });
+        commonDialog.show();
+        assert window != null;
+        WindowManager.LayoutParams param = window.getAttributes();
+        param.gravity = Gravity.CENTER | Gravity.CENTER_HORIZONTAL;
+        window.setAttributes(param);
+        Objects.requireNonNull(commonDialog.getWindow()).setBackgroundDrawable(new ColorDrawable
+                (EtherActivity.this.getResources().getColor(R.color.white_transperent)));
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
     }
 
     private void ShowPasswordDialog(int position) {
@@ -93,7 +104,7 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
             keyFrame.setVisibility(View.GONE);
             tvKey.setVisibility(View.GONE);
             mEyeImg.setVisibility(View.VISIBLE);
-            mText.setText("Private Key");
+            mText.setText(getString(R.string.private_key_));
             mEyeImg.setTag(0);
             commonDialog.show();
             mEyeImg.setOnClickListener(v -> {
@@ -110,13 +121,13 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
             // TODO: Button Click Listener
             mSubmit.setOnClickListener(v -> {
                 if (mPassword.getText().toString().isEmpty()) {
-                    Toasty.error(EtherActivity.this, "Please enter private key",
+                    Toasty.error(EtherActivity.this, getString(R.string.empty_private_key),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     commonDialog.dismiss();
                     Intent intent = new Intent(EtherActivity.this, CreateWalletActivity.class);
-                    intent.putExtra("private_key", 1);
-                    intent.putExtra("key_value", mPassword.getText().toString());
+                    intent.putExtra(Common.Constants.private_key, 1);
+                    intent.putExtra(Common.Constants.key_value, mPassword.getText().toString());
                     startActivity(intent);
                 }
                 commonDialog.dismiss();
@@ -145,10 +156,10 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
             // TODO: Button Click Listener
             mSubmit.setOnClickListener(v -> {
                 if (mKeySyore.getText().toString().isEmpty()) {
-                    Toasty.error(EtherActivity.this, "Please enter keystore",
+                    Toasty.error(EtherActivity.this, getString(R.string.empty_key_store),
                             Toast.LENGTH_SHORT).show();
                 } else if (mPassword.getText().toString().isEmpty()) {
-                    Toasty.error(EtherActivity.this, "Please enter private key",
+                    Toasty.error(EtherActivity.this, getString(R.string.empty_private_key),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     commonDialog.dismiss();
@@ -159,9 +170,9 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
                     Intent intent = new Intent(EtherActivity.this, CreateWalletActivity.class);
-                    intent.putExtra("private_key", 3);
-                    intent.putExtra("key_value", mPassword.getText().toString());
-                    intent.putExtra("url", url);
+                    intent.putExtra(Common.Constants.private_key, 3);
+                    intent.putExtra(Common.Constants.key_value, mPassword.getText().toString());
+                    intent.putExtra(Common.Constants.url, url);
                     startActivity(intent);
                 }
                 commonDialog.dismiss();
@@ -177,13 +188,13 @@ public class EtherActivity extends AppCompatActivity implements View.OnClickList
             // TODO: Button Click Listener
             mSubmit.setOnClickListener(v -> {
                 if (mPassword.getText().toString().isEmpty()) {
-                    Toasty.error(EtherActivity.this, "Please enter password",
+                    Toasty.error(EtherActivity.this, getString(R.string.empty_password),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     commonDialog.dismiss();
                     Intent intent = new Intent(EtherActivity.this, CreateWalletActivity.class);
-                    intent.putExtra("password", mPassword.getText().toString());
-                    intent.putExtra("private_key", 2);
+                    intent.putExtra(Common.Constants.password, mPassword.getText().toString());
+                    intent.putExtra(Common.Constants.private_key, 2);
                     startActivity(intent);
                 }
                 commonDialog.dismiss();
