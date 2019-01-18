@@ -9,7 +9,6 @@ import android.view.WindowManager;
 
 import com.sample.ethereum.R;
 import com.sample.ethereum.SharedHelper;
-import com.sample.ethereum.utils.Common;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -26,21 +25,24 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Handler().postDelayed(() -> {
-            if(SharedHelper.getKey(SplashActivity.this,Common.Constants.address).equals("")||
-                    SharedHelper.getKey(SplashActivity.this,Common.Constants.address).equals("null")) {
-                Intent intent = new Intent(SplashActivity.this, EtherActivity.class);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(SplashActivity.this, CreateWalletActivity.class);
-                startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(SharedHelper.getKey(SplashActivity.this,"address").equals("")||
+                        SharedHelper.getKey(SplashActivity.this,"address").equals("null")) {
+                    Intent intent = new Intent(SplashActivity.this, EtherActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, CreateWalletActivity.class);
+                    startActivity(intent);
+                }
             }
         }, 3000);
     }
 
     @Override
     public void onBackPressed() {
-        // TODO: Disable Back Button press
+        // TODO: Disable Back Buttonp
         // super.onBackPressed();
     }
 }
