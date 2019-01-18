@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_arrow_down_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_settings_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_up_arrow" />
-                            <entry key="sourceFile" value="C:\Users\Bhavani" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="icon_plus" />
+                            <entry key="sourceFile" value="C:\Users\Bhavani\Downloads\iconfinder_add_134224.svg" />
                           </map>
                         </option>
                       </PersistentState>

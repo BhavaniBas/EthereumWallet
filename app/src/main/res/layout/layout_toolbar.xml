@@ -5,15 +5,20 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:layout_alignParentLeft="true">
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -21,31 +26,46 @@
 
                 <ImageView
                     android:id="@+id/iv_back_arrow"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="4dp"
-                    android:visibility="gone"
-                    android:backgroundTint="@color/white"
                     android:background="@drawable/ic_back_arrow"
+                    android:backgroundTint="@color/white"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="center" />
+                    android:scaleType="center"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/toolbar_title"
                     style="@style/MyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_toEndOf="@+id/iv_back_arrow"
                     android:gravity="start|top"
                     android:padding="3dp"
-                    android:textColor="@color/white"
-                    android:layout_toRightOf="@+id/iv_back_arrow" />
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/iv_settings"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/icon_settings"
+                    android:backgroundTint="@color/white"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="center"
+                    android:visibility="gone" />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_below="@+id/toolbar"
-            android:background="@drawable/background_with_shadow"/>
-    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/appbar"
+        android:background="@drawable/background_with_shadow" />
+</RelativeLayout>

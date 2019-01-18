@@ -18,16 +18,12 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.exceptions.TransactionException;
-import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Transfer;
-import org.web3j.tx.response.TransactionReceiptProcessor;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 
@@ -38,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 import es.dmoral.toasty.Toasty;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.sample.ethereum.activity.CreateWalletActivity.web3;
 
 public class SendTransactionActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,13 +43,11 @@ public class SendTransactionActivity extends AppCompatActivity implements View.O
     private EditText mEdGasPrice;
     private EditText mEdGasLimit;
     private EditText mAmount;
-    private int gasPrice;
-    private int gasLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_send_transaction);
 
         ImageView mBackArrow = findViewById(R.id.iv_back_arrow);
         TextView mToolBarTittle = findViewById(R.id.toolbar_title);
@@ -82,8 +77,7 @@ public class SendTransactionActivity extends AppCompatActivity implements View.O
                 finish();
                 break;
             case R.id.btn_save:
-                sendIndividualTransaction();
-               /* if (mEdAddress.getText().toString().isEmpty()) {
+                if (mEdAddress.getText().toString().isEmpty()) {
                     Toasty.error(this, getString(R.string.empty_wallet), Toast.LENGTH_SHORT).show();
                 } else if (mAmount.getText().toString().isEmpty()) {
                     Toasty.error(this, getString(R.string.empty_amount), Toast.LENGTH_SHORT).show();
@@ -91,10 +85,10 @@ public class SendTransactionActivity extends AppCompatActivity implements View.O
                     Toasty.error(this, getString(R.string.valid_amount), Toast.LENGTH_SHORT).show();
                 } else {
                     sendIndividualTransaction();
-                }*/
+                }
                 break;
             case R.id.price_up_arrow:
-                gasPrice = Integer.parseInt(mEdGasPrice.getText().toString());
+                int gasPrice = Integer.parseInt(mEdGasPrice.getText().toString());
                 gasPrice = gasPrice + 1;
                 mEdGasPrice.setText(String.valueOf(gasPrice));
                 break;
@@ -104,7 +98,7 @@ public class SendTransactionActivity extends AppCompatActivity implements View.O
                 mEdGasPrice.setText(String.valueOf(gasPrice));
                 break;
             case R.id.limit_up_arrow:
-                gasLimit = Integer.parseInt(mEdGasLimit.getText().toString());
+                int gasLimit = Integer.parseInt(mEdGasLimit.getText().toString());
                 gasLimit = gasLimit + 1;
                 mEdGasLimit.setText(String.valueOf(gasLimit));
                 break;
@@ -117,52 +111,46 @@ public class SendTransactionActivity extends AppCompatActivity implements View.O
     }
 
     private void sendIndividualTransaction() {
-        Log.i("TAG", "Hash" + "Hi");
+        BigInteger privateKey = new BigInteger(SharedHelper.getKey(SendTransactionActivity.this, Common.Constants.privateKey), 16);
+        BigInteger publicKey = new BigInteger(SharedHelper.getKey(SendTransactionActivity.this, Common.Constants.publicKey), 16);
+        ECKeyPair ecKeyPair = new ECKeyPair(privateKey, publicKey);
+        Credentials credentials = Credentials.create(ecKeyPair);
         // TODO: Sending an Ether transaction
         // TODO: Now I am using Convert.Unit.ETHER Sometime Android webj3 “insufficient funds for gas * price + value” exception
-        /*BigInteger gasprice = BigInteger.valueOf(Long.parseLong(mEdGasPrice.getText().toString()));
-        Log.i("TAG", "gasprice:::" + gasprice);
+        BigDecimal gasPrice = Convert.toWei(BigDecimal.valueOf(Double.parseDouble(
+                mEdGasPrice.getText().toString())), Convert.Unit.GWEI);
+        BigInteger bi_gas_price = gasPrice.toBigInteger();
+        Log.i("TAG", "gasprice:::" + bi_gas_price);
         BigInteger gaslimit = BigInteger.valueOf(Long.parseLong(mEdGasLimit.getText().toString()));
         Log.i("TAG", "gaslimit:::" + gaslimit);
-        // TODO: get the next available nonce
-        EthGetTransactionCount ethGetTransactionCount;
-        try {
-            ethGetTransactionCount = web3.ethGetTransactionCount(
-                    credentials.getAddress(), DefaultBlockParameterName.LATEST).
-                    sendAsync().get();
-            // TODO: create our transaction
-            BigDecimal etherBalance = Convert.toWei(BigDecimal.valueOf(Double.parseDouble(
-                    mAmount.getText().toString())), Convert.Unit.ETHER);
-            BigInteger bi = etherBalance.toBigInteger();
-            RawTransaction rawTransaction = RawTransaction.createEtherTransaction(
-                    ethGetTransactionCount.getTransactionCount(), gasprice, gaslimit,
-                    mEdAddress.getText().toString(), bi);
-            // TODO: sign & send our transaction
-            byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
-            String hexValue = Numeric.toHexString(signedMessage);
-            EthSendTransaction ethSendTransaction = web3.ethSendRawTransaction(hexValue).send();
-            String transactionHash = ethSendTransaction.getTransactionHash();
-            Log.i("TAG", "Transaction Hash" + transactionHash);
-            Toasty.success(getApplicationContext(), getString(R.string.transaction_send), Toast.LENGTH_SHORT).show();
-                finish();*/
+
         runOnUiThread(() -> {
-            BigInteger privateKey = new BigInteger(SharedHelper.getKey(SendTransactionActivity.this, Common.Constants.privateKey), 16);
-            BigInteger publicKey = new BigInteger(SharedHelper.getKey(SendTransactionActivity.this, Common.Constants.publicKey), 16);
-            ECKeyPair ecKeyPair = new ECKeyPair(privateKey, publicKey);
-            Credentials credentials = Credentials.create(ecKeyPair);
-            TransactionReceipt transactionReceipt;
+            // TODO: get the next available nonce
+            EthGetTransactionCount ethGetTransactionCount;
             try {
-                transactionReceipt = Transfer.sendFunds(web3,
-                        credentials, "0xcfF997Ac428D3986c32aB45Cb80FB780301319F4",
-                        BigDecimal.valueOf(0.1),
-                        Convert.Unit.ETHER).sendAsync().get();
-                String transactionHash = transactionReceipt.getTransactionHash();
+                ethGetTransactionCount = web3.ethGetTransactionCount(
+                        credentials.getAddress(), DefaultBlockParameterName.LATEST).
+                        send();
+                // TODO: create our transaction
+                BigDecimal etherBalance = Convert.toWei(BigDecimal.valueOf(Double.parseDouble(
+                        mAmount.getText().toString())), Convert.Unit.ETHER);
+                BigInteger bi = etherBalance.toBigInteger();
+                RawTransaction rawTransaction = RawTransaction.createEtherTransaction(
+                        ethGetTransactionCount.getTransactionCount(), bi_gas_price, gaslimit,
+                        mEdAddress.getText().toString(), bi);
+                // TODO: sign & send our transaction
+                byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+                String hexValue = Numeric.toHexString(signedMessage);
+                EthSendTransaction ethSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get();
+                String transactionHash = ethSendTransaction.getTransactionHash();
                 Log.i("TAG", "Transaction Hash" + transactionHash);
                 Toasty.success(getApplicationContext(), getString(R.string.transaction_send), Toast.LENGTH_SHORT).show();
                 finish();
-            } catch (ExecutionException | InterruptedException | IOException | TransactionException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
                 Log.i("TAG", "exception" + e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }

@@ -84,8 +84,12 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             if (etherResult.getHash() != null)
                 holder.mTransHash.setText(etherResult.getHash());
             if(mPosition == 0) {
-                holder.lnrTransaction.setOnClickListener(v ->
-                        createListencer.createWalletClicked(etherResult));
+                holder.lnrTransaction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        createListencer.createWalletClicked(etherResult);
+                    }
+                });
             } else {
                 holder.lnrTransaction.setOnClickListener(v ->
                         transactionListencer.transactionClicked(etherResult));

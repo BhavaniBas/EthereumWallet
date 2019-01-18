@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".activity.CreateWalletActivity">
+    android:background="@color/app_back_ground"
+    android:scrollbars="none">
 
-    <include
-        android:id="@+id/ic_toolbar"
-        layout="@layout/layout_toolbar"
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:context=".activity.CreateWalletActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:layout_below="@+id/ic_toolbar">
+        <include
+            android:id="@+id/ic_toolbar"
+            layout="@layout/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/lnrLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/ic_toolbar"
             android:orientation="vertical">
 
             <TextView
@@ -31,160 +30,220 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:text="@string/ethereum_details"
-                android:textColor="@color/dark_blue" />
-
-            <!-- Account Address Layout-->
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/ether_address"
                     style="@style/MyText"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/sunny_spring_day"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/quicksand_medium"
                     android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/account_address"
-                    android:textSize="20dp" />
+                    android:text="@string/ether_address"
+                    android:textColor="@color/grey"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tv_acc_address"
                     style="@style/MyText"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="@color/grey"
-                    android:textSize="14dp" />
-
-            </LinearLayout>
-
-            <!-- Private Key Layout-->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/MyText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/sunny_spring_day"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="@string/private_key"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/tv_private_key"
-                    style="@style/MyText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="@color/grey"
-                    android:textSize="14dp" />
-
+                    android:textColor="@color/blackLight"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Public Key Layout-->
-
-            <LinearLayout
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:elevation="10dp"
+                android:innerRadius="0dp"
+                card_view:cardBackgroundColor="@color/black"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardUseCompatPadding="true">
 
-                <TextView
-                    style="@style/MyText"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/sunny_spring_day"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/public_key"
-                    android:textSize="20dp" />
+                    android:layout_margin="12dp"
+                    android:background="@drawable/black_radius_square"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_public_key"
-                    style="@style/MyText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="@color/grey"
-                    android:textSize="14dp" />
+                    <!--  Ether Symbol Layout -->
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_ether"
+                            android:tint="@color/white" />
+                    </LinearLayout>
+
+                    <!--  Ether Amount Layout -->
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_coin_name"
+                            style="@style/MyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/quicksand_bold"
+                            android:gravity="start"
+                            android:padding="3dp"
+                            android:text="@string/eth"
+                            android:textColor="@color/yellow"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@+id/tv_current_amount"
+                            style="@style/MyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:gravity="start"
+                            android:text="0.0 ETH"
+                            android:textColor="@color/yellow"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/tv_usd_amount"
+                            style="@style/MyText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:gravity="start"
+                            android:text="$ 0.0 USD"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <!--  Wallet Address Layout -->
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_qr_code"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <TextView
                 style="@style/MyText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="3dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/available_bal"
-                android:textColor="@color/red" />
+                android:padding="5dp"
+                android:text="Transaction History"
+                android:textColor="@color/grey"
+                android:textSize="20sp" />
 
-            <!-- Balance Layout-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_transaction"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/background_with_shadow" />
+
+            <TextView
+                android:id="@+id/tv_empty_transaction"
+                style="@style/MyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="No Transactions"
+                android:textColor="@color/blackLight" />
+
+            <TextView
+                android:id="@+id/tv_show_more"
+                style="@style/MyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="see more"
+                android:textColor="@color/blue"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lnrLayout">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    style="@style/MyText"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/btn_receive"
+                    style="@style/MyButton.Primary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/sunny_spring_day"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/bal"
-                    android:textSize="20dp" />
+                    android:text="Receive" />
 
-                <TextView
-                    android:id="@+id/tv_bal"
-                    style="@style/MyText"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/btn_send"
+                    style="@style/MyButton.Primary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="@color/green"
-                    android:textSize="14dp" />
+                    android:text="@string/send" />
             </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
 
-            <TextView
-                android:id="@+id/tv_logout"
-                style="@style/MyText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"
-                android:background="@drawable/bg_primary"
-                android:fontFamily="@font/sunny_spring_day"
-                android:gravity="center"
-                android:text="@string/logout"
-                android:textColor="@color/white" />
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>

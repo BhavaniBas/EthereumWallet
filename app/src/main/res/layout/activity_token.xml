@@ -180,6 +180,14 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/token_done"
+                style="@style/MyButton.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Done"/>
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.sample.ethereum.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.sample.ethereum.R;
 import com.sample.ethereum.SharedHelper;
 import com.sample.ethereum.network.APIClient;
 import com.sample.ethereum.network.ApiInterface;
+import com.sample.ethereum.response.Token;
 import com.sample.ethereum.response.TokenResponse;
 import com.sample.ethereum.utils.Common;
 import com.sample.ethereum.utils.NetworkUtils;
@@ -48,7 +50,8 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
     private String ethBal;
     private TextView tvTokenBal;
     private TextView tvEthTokenBal;
-    private String contractAddress;
+    private List<Token> mTokenList = new ArrayList<>();
+    private List<Token> mToken = new ArrayList<>();
     ArrayList<String> values = new ArrayList<>();
     ArrayList<String> values1 = new ArrayList<>();
 
@@ -62,6 +65,7 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
         EditText mEdTokenAddress = findViewById(R.id.ed_token_address);
         mTokenSymbol = findViewById(R.id.token_symbol);
         mTokenDecimal = findViewById(R.id.token_decimal);
+        Button tokenDone = findViewById(R.id.token_done);
         mSubmit = findViewById(R.id.token_submit);
         lnrTokenContainer = findViewById(R.id.lnrAddToken);
         lnrTokenBalContainer = findViewById(R.id.lnrTokenBalContainer);
@@ -72,6 +76,7 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
         mToolBarTittle.setText(getString(R.string.add_token));
         mBackArrow.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
+        tokenDone.setOnClickListener(this);
 
         try {
             if (SharedHelper.getListKey(TokenActivity.this, Common.Constants.addressList) == null) {
@@ -171,18 +176,41 @@ public class TokenActivity extends AppCompatActivity implements View.OnClickList
         lnrTokenContainer.setVisibility(View.GONE);
         lnrTokenBalContainer.setVisibility(View.VISIBLE);
         tvTokenBal.setText(tokenBal + " " + tokenName);
-        tvEthTokenBal.setText(round(Double.parseDouble(ethBal), 3) + " " + getString(R.string.eth));
+        tvEthTokenBal.setText(round(Double.parseDouble(ethBal), 2) + " " + getString(R.string.eth));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back_arrow:
+                Intent intent = new Intent(this, TokenListActivity.class);
+                intent.putExtra("tokenName", "");
+                startActivity(intent);
                 finish();
                 break;
             case R.id.token_submit:
                 showTokenBal();
                 break;
+            case R.id.token_done:
+                mTokenList.clear();
+                mTokenList.add(new Token(mTokenSymbol.getText().toString(), false));
+                if (mTokenList != null && !mTokenList.isEmpty()) {
+                    mToken = SharedHelper.getTokenListKey(this, "tokenList");
+                    mToken.addAll(mTokenList);
+                    SharedHelper.putTokenListKey(this, "tokenList", mToken);
+                    Toasty.success(this, "Token Added Successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent doneIntent = new Intent(this, TokenListActivity.class);
+        doneIntent.putExtra("tokenName", "");
+        startActivity(doneIntent);
+        finish();
     }
 }

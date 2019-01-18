@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/white"
+    android:background="@color/app_back_ground"
     tools:context=".activity.EtherActivity">
 
     <ImageView
@@ -51,6 +51,5 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/import_wallet" />
-
     </LinearLayout>
 </RelativeLayout>
